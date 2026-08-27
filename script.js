@@ -1,109 +1,109 @@
-const releaseDate = new Date('2026-11-19T00:00:00+03:00').getTime();
-const launchWindowStart = new Date('2025-11-06T00:00:00+03:00').getTime();
+const RELEASE_DATE = new Date('2026-11-19T00:00:00+03:00').getTime();
+const COUNTDOWN_START = new Date('2025-11-06T00:00:00+03:00').getTime();
 
 const $ = (id) => document.getElementById(id);
 
 function pad(value, length = 2) {
-  return String(value).padStart(length, '0');
+  return String(Math.max(0, value)).padStart(length, '0');
 }
 
 function updateCountdown() {
   const now = Date.now();
-  const distance = releaseDate - now;
+  const remaining = Math.max(0, RELEASE_DATE - now);
 
-  if (distance <= 0) {
-    $('days').textContent = '000';
-    $('hours').textContent = '00';
-    $('minutes').textContent = '00';
-    $('seconds').textContent = '00';
-    $('progress').style.width = '100%';
-    const hint = document.querySelector('.tiny');
-    if (hint) hint.textContent = 'GTA VI is here 🎉';
-    return;
-  }
-
-  const totalSeconds = Math.floor(distance / 1000);
+  const totalSeconds = Math.floor(remaining / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
-  $('days').textContent = pad(days, 3);
-  $('hours').textContent = pad(hours);
-  $('minutes').textContent = pad(minutes);
-  $('seconds').textContent = pad(seconds);
+  const daysEl = $('days');
+  const hoursEl = $('hours');
+  const minutesEl = $('minutes');
+  const secondsEl = $('seconds');
+  const progressEl = $('progress');
 
-  const elapsed = Math.max(0, now - launchWindowStart);
-  const total = releaseDate - launchWindowStart;
-  $('progress').style.width = `${Math.min(100, (elapsed / total) * 100)}%`;
+  if (daysEl) daysEl.textContent = pad(days, 3);
+  if (hoursEl) hoursEl.textContent = pad(hours);
+  if (minutesEl) minutesEl.textContent = pad(minutes);
+  if (secondsEl) secondsEl.textContent = pad(seconds);
+
+  if (progressEl) {
+    const total = RELEASE_DATE - COUNTDOWN_START;
+    const elapsed = Math.max(0, Math.min(total, now - COUNTDOWN_START));
+    progressEl.style.width = `${total > 0 ? (elapsed / total) * 100 : 0}%`;
+  }
+
+  const hint = document.querySelector('.tiny');
+  if (hint && remaining <= 0) {
+    hint.textContent = document.documentElement.lang === 'ar'
+      ? 'وصلنا إلى يوم الإطلاق 🎉'
+      : 'GTA VI is here 🎉';
+  }
 }
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// Lightweight parallax.
+// Lightweight mouse parallax, disabled for touch devices.
 const hero = document.querySelector('.hero');
-if (hero) {
+if (hero && window.matchMedia('(pointer: fine)').matches) {
   window.addEventListener('pointermove', (event) => {
-    const x = (event.clientX / window.innerWidth - 0.5) * 10;
-    const y = (event.clientY / window.innerHeight - 0.5) * 8;
+    const x = (event.clientX / window.innerWidth - 0.5) * 8;
+    const y = (event.clientY / window.innerHeight - 0.5) * 6;
     hero.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
   }, { passive: true });
 }
 
-// Better ad layout: reserved-height slots reduce CLS and keep ads away from the countdown.
-function createAdSlot(id, label) {
+// Reserve clean, non-intrusive ad areas between content sections.
+function createAdSlot(id) {
   const section = document.createElement('section');
   section.className = 'ad-slot';
   section.id = id;
   section.setAttribute('aria-label', 'Advertisement');
-  section.innerHTML = `<div class="ad-inner"><span>${label}</span><div class="ad-content" data-ad-slot="${id}"></div></div>`;
+  section.innerHTML = `
+    <div class="ad-inner">
+      <span>ADVERTISEMENT</span>
+      <div class="ad-content" data-ad-slot="${id}"></div>
+    </div>
+  `;
   return section;
 }
 
-const heroSection = document.querySelector('.hero');
 const gallerySection = document.querySelector('#gallery');
 const aboutSection = document.querySelector('#about');
-if (heroSection && gallerySection) {
-  gallerySection.before(createAdSlot('ad-top', 'ADVERTISEMENT'));
-}
-if (gallerySection && aboutSection) {
-  aboutSection.before(createAdSlot('ad-middle', 'ADVERTISEMENT'));
-}
+if (gallerySection) gallerySection.before(createAdSlot('ad-top'));
+if (aboutSection) aboutSection.before(createAdSlot('ad-middle'));
 
-// SEO: structured data for the countdown page. No claim of being an official Rockstar site.
+// Add structured data without falsely presenting this fan page as official.
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'GTA VI Countdown',
-  description: 'Live countdown to the release of Grand Theft Auto VI.',
+  description: 'A fan-made live countdown to Grand Theft Auto VI.',
   url: window.location.origin + window.location.pathname,
-  inLanguage: ['en', 'ar'],
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: window.location.origin + window.location.pathname + '?q={search_term_string}',
-    'query-input': 'required name=search_term_string'
-  }
+  inLanguage: ['en', 'ar']
 };
+
 const ld = document.createElement('script');
 ld.type = 'application/ld+json';
 ld.textContent = JSON.stringify(structuredData);
 document.head.appendChild(ld);
 
-// Image SEO/performance safeguards.
+// Image performance hints.
 document.querySelectorAll('.gallery-grid img').forEach((img) => {
   img.loading = 'lazy';
   img.decoding = 'async';
-  img.setAttribute('fetchpriority', 'low');
 });
+
 const heroImage = document.querySelector('.hero-image img');
 if (heroImage) {
   heroImage.loading = 'eager';
+  heroImage.fetchPriority = 'high';
   heroImage.decoding = 'async';
-  heroImage.setAttribute('fetchpriority', 'high');
 }
 
-// Ad slot styling is injected here so the static page needs no extra dependency.
+// Ad styling with reserved space to reduce layout shift.
 const adStyle = document.createElement('style');
 adStyle.textContent = `
 .ad-slot{min-height:122px;padding:22px 7vw;background:#09070d;display:flex;align-items:center;justify-content:center;border-top:1px solid rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.045)}
@@ -113,4 +113,3 @@ adStyle.textContent = `
 @media(max-width:600px){.ad-slot{min-height:105px;padding:16px 5vw}.ad-inner{min-height:70px;border-radius:12px}}
 `;
 document.head.appendChild(adStyle);
-`;
