@@ -1,0 +1,11 @@
+{
+  "name": "GTA VI Countdown",
+  "short_name": "GTA VI",
+  "description": "Live countdown to the release of Grand Theft Auto VI.",
+  "start_url": "/gta/",
+  "display": "standalone",
+  "background_color": "#08070c",
+  "theme_color": "#09070d",
+  "lang": "en",
+  "dir": "ltr"
+}
