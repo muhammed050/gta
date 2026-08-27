@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="عداد تنازلي أنيق لمعرفة كم تبقى على إطلاق Grand Theft Auto VI." />
+  <meta name="theme-color" content="#09070d" />
+  <title>GTA VI — العد التنازلي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="sun"></div>
+  <div class="palms palm-one">♣</div>
+  <div class="palms palm-two">♣</div>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="GTA VI">
+      <span class="brand-gta">GTA</span><span class="brand-vi">VI</span>
+    </a>
+    <nav>
+      <a href="#countdown">العد التنازلي</a>
+      <a href="#about">عن اللعبة</a>
+    </nav>
+    <a class="rockstar" href="https://www.rockstargames.com/VI" target="_blank" rel="noreferrer">ROCKSTAR GAMES ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="countdown">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> THE NEXT CHAPTER</div>
+        <h1>كم باقي على<br><strong>GTA VI؟</strong></h1>
+        <p class="lead">المدينة تستعد. الأضواء ستشتعل من جديد.<br>موعدنا في <b>Vice City</b> يقترب كل ثانية.</p>
+
+        <div class="release-pill">
+          <span class="dot"></span>
+          <span>موعد الإطلاق الرسمي</span>
+          <strong>19 نوفمبر 2026</strong>
+        </div>
+      </div>
+
+      <div class="countdown-wrap" aria-live="polite">
+        <div class="countdown" id="countdownBox">
+          <div class="time-card"><span id="days">000</span><small>يوم</small></div>
+          <div class="separator">:</div>
+          <div class="time-card"><span id="hours">00</span><small>ساعة</small></div>
+          <div class="separator">:</div>
+          <div class="time-card"><span id="minutes">00</span><small>دقيقة</small></div>
+          <div class="separator">:</div>
+          <div class="time-card"><span id="seconds">00</span><small>ثانية</small></div>
+        </div>
+        <div class="progress-line"><span id="progress"></span></div>
+        <p class="tiny">الوقت المتبقي حتى الإطلاق العالمي</p>
+      </div>
+
+      <div class="scroll-hint">مرر للأسفل <span>↓</span></div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="section-heading">
+        <span>01 / VICE CITY</span>
+        <h2>فصل جديد،<br><em>مدينة لا تنام.</em></h2>
+      </div>
+      <div class="about-grid">
+        <article class="glass-card featured">
+          <div class="card-number">VI</div>
+          <h3>Vice City</h3>
+          <p>استعد للعودة إلى عالم مليء بالشمس والنيون والجريمة، ضمن ولاية Leonida وشوارع Vice City.</p>
+        </article>
+        <article class="glass-card">
+          <span class="tag">JASON</span>
+          <h3>Jason Duval</h3>
+          <p>رجل يحاول أن يعيش حياة سهلة، لكن الأمور تصبح أصعب مع كل خطوة.</p>
+        </article>
+        <article class="glass-card">
+          <span class="tag">LUCIA</span>
+          <h3>Lucia Caminos</h3>
+          <p>خرجت من السجن وهي مصممة على تغيير حياتها مهما كان الثمن.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand">GTA <span>VI</span></div>
+    <p>موقع غير رسمي من صنع المعجبين · Grand Theft Auto VI © Rockstar Games</p>
+    <a href="https://www.rockstargames.com/VI" target="_blank" rel="noreferrer">الموقع الرسمي ↗</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
